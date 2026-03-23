@@ -1,0 +1,68 @@
+{% extends 'formato.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-8">
+            <h2><i class="fas fa-user-circle"></i> {{ cliente.nombre }}</h2>
+            <p class="text-muted">
+                <strong>DPI:</strong> {{ cliente.dpi }} | 
+                <strong>Teléfono:</strong> {{ cliente.telefono }}
+            </p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{% url 'consultas' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Volver
+            </a>
+        </div>
+    </div>
+
+    {% if cuentas %}
+        <div class="row">
+            {% for cuenta in cuentas %}
+                <div class="col-md-6 col-lg-5 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="mb-0">{{ cuenta.numero_cuenta }}</h5>
+                                    <small style="color: rgba(255,255,255,0.8);">
+                                        <i class="fas fa-{% if cuenta.tipo_cuenta == 'ahorro' %}piggy-bank{% else %}money-bill{% endif %}"></i>
+                                        {{ cuenta.get_tipo_cuenta_display }}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <small class="text-muted">Saldo Disponible</small>
+                                <h3 class="text-success">Q{{ cuenta.saldo }}</h3>
+                            </div>
+                            <hr>
+                            <p class="mb-2">
+                                <small class="text-muted">
+                                    <i class="fas fa-calendar"></i> 
+                                    Creada: {{ cuenta.fecha_creacion }}
+                                </small>
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="{% url 'transacciones_cuenta' cuenta.numero_cuenta %}" class="btn btn-sm btn-info">
+                                <i class="fas fa-history"></i> Transacciones
+                            </a>
+                            <a href="{% url 'transferencia' %}" class="btn btn-sm btn-primary">
+                                <i class="fas fa-exchange-alt"></i> Transferencia
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> Este cliente no tiene cuentas registradas.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

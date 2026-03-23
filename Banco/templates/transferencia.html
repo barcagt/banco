@@ -1,0 +1,111 @@
+{% extends 'formato.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2><i class="fas fa-exchange-alt"></i> Realizar una Transferencia</h2>
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        <i class="fas fa-{% if message.tags == 'success' %}check-circle{% else %}exclamation-circle{% endif %}"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Transfiere dinero entre cuentas de forma segura</h5>
+                </div>
+
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            <label for="cuenta_origen" class="form-label">
+                                <i class="fas fa-arrow-up text-danger"></i> Cuenta Origen (Retiro)
+                            </label>
+                            <select class="form-select" id="cuenta_origen" name="cuenta_origen" required>
+                                <option value="">-- Selecciona una cuenta --</option>
+                                {% for cuenta in cuentas %}
+                                    <option value="{{ cuenta.numero_cuenta }}">
+                                        {{ cuenta.numero_cuenta }} - {{ cuenta.cliente.nombre }} (Saldo: Q{{ cuenta.saldo }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="text-center mb-4">
+                            <div class="badge bg-primary" style="padding: 0.5rem 1rem; font-size: 1.1rem;">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="cuenta_destino" class="form-label">
+                                <i class="fas fa-arrow-down text-success"></i> Cuenta Destino (Depósito)
+                            </label>
+                            <select class="form-select" id="cuenta_destino" name="cuenta_destino" required>
+                                <option value="">-- Selecciona una cuenta --</option>
+                                {% for cuenta in cuentas %}
+                                    <option value="{{ cuenta.numero_cuenta }}">
+                                        {{ cuenta.numero_cuenta }} - {{ cuenta.cliente.nombre }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <hr>
+
+                        <div class="mb-4">
+                            <label for="monto" class="form-label">
+                                <i class="fas fa-money-bill"></i> Monto a Transferir
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">Q</span>
+                                <input type="number" class="form-control" id="monto" name="monto" 
+                                       step="0.01" min="0" required placeholder="0.00">
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="descripcion" class="form-label">
+                                <i class="fas fa-align-left"></i> Descripción (Opcional)
+                            </label>
+                            <textarea class="form-control" id="descripcion" name="descripcion" 
+                                      rows="2" placeholder="Motivo o referencia de la transferencia"></textarea>
+                        </div>
+
+                        <hr>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'consultas' %}" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-check"></i> Confirmar Transferencia
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="alert alert-info mt-4">
+                <h6 class="alert-heading">
+                    <i class="fas fa-info-circle"></i> Información importante:
+                </h6>
+                <ul class="mb-0">
+                    <li>Una transferencia genera automáticamente dos transacciones: retiro en la cuenta origen y depósito en la destino.</li>
+                    <li>Se verificará que tengas fondos suficientes antes de procesar.</li>
+                    <li>Las transacciones son inmediatas e irreversibles.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'formato.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-8">
+            <h2><i class="fas fa-search"></i> Consultas Bancarias</h2>
+            <p class="text-muted">Visualiza y administra tus clientes y sus cuentas</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{% url 'transferencia' %}" class="btn btn-primary">
+                <i class="fas fa-exchange-alt"></i> Realizar Transferencia
+            </a>
+        </div>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle"></i> {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if clientes %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-user"></i> Nombre</th>
+                        <th><i class="fas fa-id-card"></i> DPI</th>
+                        <th><i class="fas fa-phone"></i> Teléfono</th>
+                        <th><i class="fas fa-calendar"></i> Registro</th>
+                        <th style="text-align: center;"><i class="fas fa-cog"></i> Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cliente in clientes %}
+                        <tr>
+                            <td><strong>{{ cliente.nombre }}</strong></td>
+                            <td>{{ cliente.dpi }}</td>
+                            <td>{{ cliente.telefono }}</td>
+                            <td>{{ cliente.fecha_registro }}</td>
+                            <td style="text-align: center;">
+                                <a href="{% url 'cuentas_cliente' cliente.dpi %}" class="btn btn-sm btn-info">
+                                    <i class="fas fa-wallet"></i> Cuentas
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle"></i> No hay clientes registrados.
+            <a href="{% url 'registrar_clientes' %}" class="alert-link">Registra el primer cliente</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

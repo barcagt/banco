@@ -1,0 +1,95 @@
+{% extends 'formato.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-8">
+            <h2><i class="fas fa-exchange-alt"></i> Transacciones - {{ cuenta.numero_cuenta }}</h2>
+            <p class="text-muted">Cliente: <strong>{{ cuenta.cliente.nombre }}</strong></p>
+            <p>
+                <strong>Saldo Actual:</strong>
+                <span class="text-success" style="font-size: 1.3rem;">Q{{ cuenta.saldo }}</span>
+            </p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{% url 'cuentas_cliente' cuenta.cliente.dpi %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Volver
+            </a>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5><i class="fas fa-filter"></i> Filtrar por Fecha</h5>
+        </div>
+        <div class="card-body">
+            <form method="GET" class="row g-3">
+                <div class="col-md-5">
+                    <label for="fecha_inicio" class="form-label">Desde</label>
+                    <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" value="{{ fecha_inicio }}">
+                </div>
+                <div class="col-md-5">
+                    <label for="fecha_fin" class="form-label">Hasta</label>
+                    <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" value="{{ fecha_fin }}">
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-search"></i> Filtrar
+                    </button>
+                </div>
+            </form>
+            {% if fecha_inicio or fecha_fin %}
+                <a href="{% url 'transacciones_cuenta' cuenta.numero_cuenta %}" class="btn btn-sm btn-outline-secondary mt-2">
+                    <i class="fas fa-times"></i> Limpiar filtros
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if transacciones %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th style="text-align: center;"><i class="fas fa-receipt"></i> Tipo</th>
+                        <th style="text-align: right;"><i class="fas fa-money-bill"></i> Monto</th>
+                        <th><i class="fas fa-align-left"></i> Descripción</th>
+                        <th><i class="fas fa-clock"></i> Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaccion in transacciones %}
+                        <tr>
+                            <td style="text-align: center;">
+                                {% if transaccion.tipo == 'deposito' %}
+                                    <span class="badge bg-success">
+                                        <i class="fas fa-arrow-down"></i> Depósito
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-danger">
+                                        <i class="fas fa-arrow-up"></i> Retiro
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td style="text-align: right;">
+                                {% if transaccion.tipo == 'deposito' %}
+                                    <span class="text-success"><strong>+Q{{ transaccion.monto }}</strong></span>
+                                {% else %}
+                                    <span class="text-danger"><strong>-Q{{ transaccion.monto }}</strong></span>
+                                {% endif %}
+                            </td>
+                            <td>{{ transaccion.descripcion }}</td>
+                            <td>{{ transaccion.fecha }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> No hay transacciones en este período.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
