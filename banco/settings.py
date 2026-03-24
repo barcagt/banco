@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'banco.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
+        default='sqlite:///db.sqlite3',
         conn_max_age=600,
     )
 }
@@ -121,7 +121,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / "Banco/static",
+    BASE_DIR / "banco/static",
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

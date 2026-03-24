@@ -8,6 +8,12 @@ from Administracion.models import Cliente, Cuenta, Transaccion
 
 
 @login_required(login_url='login')
+def inicio(request):
+    """Página de inicio"""
+    return render(request, 'inicio.html')
+
+
+@login_required(login_url='login')
 def registrar_cliente(request):
 
     form = ClienteForm(request.POST or None)
