@@ -1,1 +1,1 @@
-web:gunicorn Banco.wsgi
+web: gunicorn banco.wsgi:application
