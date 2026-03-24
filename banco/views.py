@@ -1,3 +1,5 @@
+from urllib import request
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -5,7 +7,8 @@ from django.db import transaction
 from decimal import Decimal
 from .forms import ClienteForm, CuentaForm, TransaccionForm
 from Administracion.models import Cliente, Cuenta, Transaccion
-
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import logout
 
 @login_required(login_url='login')
 def inicio(request):
@@ -159,3 +162,15 @@ def transferencia(request):
     
     cuentas = Cuenta.objects.all()
     return render(request, 'transferencia.html', {'cuentas': cuentas})
+
+def cerrar_sesion(request):
+    logout(request)
+    return redirect('login')
+
+def registro_usuario(request):   
+    form = UserCreationForm(request.POST or None)
+    if form.is_valid():
+        user = form.save()
+        messages.success(request, 'Usuario registrado exitosamente')
+        return redirect('login')
+    return render(request, 'registro_usuario.html', {'form': form})

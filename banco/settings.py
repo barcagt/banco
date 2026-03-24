@@ -131,3 +131,7 @@ STATIC_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'login'
+
+SESSION_COOKIE_AGE= 600
+SESSION_SAVE_EVERY_REQUEST = True
+SESGSION_EXPIRE_AT_BROWSER_CLOSE = True
