@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from decimal import Decimal
 from .forms import ClienteForm, CuentaForm, TransaccionForm
 from Administracion.models import Cliente, Cuenta, Transaccion
 
 
+@login_required(login_url='login')
 def registrar_cliente(request):
 
     form = ClienteForm(request.POST or None)
@@ -17,6 +19,7 @@ def registrar_cliente(request):
     return render(request, 'registro_clientes.html', {'form': form})
 
 
+@login_required(login_url='login')
 def registrar_cuenta(request):
 
     form = CuentaForm(request.POST or None)
@@ -28,6 +31,7 @@ def registrar_cuenta(request):
     return render(request, 'registro_cuentas.html', {'form': form})
 
 
+@login_required(login_url='login')
 def registrar_transaccion(request):
 
     form = TransaccionForm(request.POST or None)
@@ -56,6 +60,7 @@ def registrar_transaccion(request):
     return render(request, 'registro_transaccion.html', {'form': form})
 
 
+@login_required(login_url='login')
 def consultas(request):
     """Vista principal de consultas"""
     clientes = Cliente.objects.all()

@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - Banco</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+        }
+        .navbar {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar h1 {
+            color: #667eea;
+            margin: 0;
+            font-size: 24px;
+        }
+        .navbar a {
+            color: #667eea;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+        .navbar a:hover {
+            color: #764ba2;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .welcome-card {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+        .welcome-card h2 {
+            color: #333;
+            margin-top: 0;
+        }
+        .welcome-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .menu-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            text-decoration: none;
+            color: #333;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .menu-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+        .menu-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .menu-card p {
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>🏦 Banco</h1>
+        <div>
+            <span>Bienvenido, {{ user.username }}</span>
+            <a href="{% url 'logout' %}">Cerrar Sesión</a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="welcome-card">
+            <h2>Bienvenido al Sistema Bancario</h2>
+            <p>Selecciona una opción del menú para continuar con tus operaciones bancarias.</p>
+        </div>
+        <div class="menu-grid">
+            <a href="{% url 'consultas' %}" class="menu-card">
+                <h3>📊 Consultas</h3>
+                <p>Ver información de clientes y cuentas</p>
+            </a>
+            <a href="{% url 'registrar_clientes' %}" class="menu-card">
+                <h3>👤 Registrar Cliente</h3>
+                <p>Agregar un nuevo cliente al sistema</p>
+            </a>
+            <a href="{% url 'registrar_cuentas' %}" class="menu-card">
+                <h3>💳 Registrar Cuenta</h3>
+                <p>Crear una nueva cuenta bancaria</p>
+            </a>
+            <a href="{% url 'registrar_transaccion' %}" class="menu-card">
+                <h3>💱 Registrar Transacción</h3>
+                <p>Realizar un depósito o retiro</p>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
