@@ -67,6 +67,7 @@ def consultas(request):
     return render(request, 'consultas.html', {'clientes': clientes})
 
 
+@login_required(login_url='login')
 def cuentas_cliente(request, dpi):
     """Ver cuentas de un cliente específico"""
     cliente = get_object_or_404(Cliente, dpi=dpi)
@@ -77,6 +78,7 @@ def cuentas_cliente(request, dpi):
     })
 
 
+@login_required(login_url='login')
 def transacciones_cuenta(request, numero_cuenta):
     """Ver transacciones de una cuenta con filtro por fecha"""
     cuenta = get_object_or_404(Cuenta, numero_cuenta=numero_cuenta)
@@ -99,6 +101,7 @@ def transacciones_cuenta(request, numero_cuenta):
     })
 
 
+@login_required(login_url='login')
 def transferencia(request):
     """Realizar transferencia entre cuentas"""
     if request.method == 'POST':
